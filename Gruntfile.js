@@ -7,8 +7,21 @@
  */
 
 'use strict';
+var path = require('path');
 
 module.exports = function(grunt) {
+  var _ = grunt.util._;
+
+  var i18nProcess = function(filepath, content, contentOptions){
+    var bundleName = path.basename(filepath).replace(new RegExp(path.extname(filepath) + '$'), '');
+    var template = [
+    'define(function() {',
+    'return ((window.Inn = window.Inn || {}).i18n = window.Inn.i18n || {})['+ contentOptions.projectName + '/<%= filename %>] = <%= JSON.stringify(content) %>;',
+    '});'
+    ];
+    return _.template( template.join(''), {filename: bundleName, content: content});
+  }
+
 
   // Project configuration.
   grunt.initConfig({
@@ -30,22 +43,41 @@ module.exports = function(grunt) {
 
     // Configuration to be run (and then tested).
     php_to_json: {
-      default_options: {
+      i18n_4game: {
         options: {
+          contentOptions: {
+            projectName: "4game.com" 
+          },
+          contentCallback: i18nProcess
         },
-        files: {
-          'tmp/default_options': ['test/fixtures/testing', 'test/fixtures/123'],
-        },
+        expand: true,
+        cwd: process.env['INN_I18N_PATH'],
+        src: ['lang/*/4game.com/**/*.php','!lang/*/4game.com/**/summary.php'],
+        dest: 'tmp/i18n',
+        ext: ".js"
       },
-      custom_options: {
+      i18n_inn: {
         options: {
-          separator: ': ',
-          punctuation: ' !!!',
+          contentOptions: {
+            projectName: "inn" 
+          },
+          contentCallback: i18nProcess
         },
-        files: {
-          'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123'],
-        },
-      },
+        expand: true,
+        cwd: process.env['INN_I18N_PATH'],
+        src: ['lang/*/inn/**/*.php','!lang/*/inn/**/summary.php'],
+        dest: 'tmp/i18n',
+        ext: ".js"
+      }
+      // custom_options: {
+      //   options: {,'lang/*/inn/**/*.php'
+      //     separator: ': ',
+      //     punctuation: ' !!!',
+      //   },
+      //   files: {
+      //     'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123'],
+      //   },
+      // },
     },
 
     // Unit tests.
@@ -54,6 +86,7 @@ module.exports = function(grunt) {
     },
 
   });
+
 
   // Actually load this plugin's task(s).
   grunt.loadTasks('tasks');

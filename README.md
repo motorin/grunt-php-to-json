@@ -1,4 +1,4 @@
-# grunt-php-to-json
+# grunt-php-to-json [![Build Status](https://travis-ci.org/Motorin/grunt-php-to-json.png)](https://travis-ci.org/Motorin/grunt-php-to-json)
 
 > Convert PHP-array files to JSON-files
 

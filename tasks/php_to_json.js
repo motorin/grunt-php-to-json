@@ -22,13 +22,9 @@ module.exports = function(grunt) {
   
   grunt.registerMultiTask('php_to_json', 'Convert PHP-array to JSON', function() {
 
-    var oldTemplateSettings = _.templateSettings;
-        // _.templateSettings = {
-          // 'interpolate': /{{([\s\S]+?)}}/g
-        // };
-
     // Tell grunt this task is asynchronous.
     var done = this.async();
+    var filesProceed = 0;
 
 
     // init asynchronous flow
@@ -44,6 +40,7 @@ module.exports = function(grunt) {
 
     // done building callback
     queue.drain = function() {
+        grunt.log.ok("Files successfuly converted: " + filesProceed);
         // _.templateSettings = oldTemplateSettings;
         done(true)
     };
@@ -81,8 +78,9 @@ module.exports = function(grunt) {
               // Without content postProcess
               grunt.file.write(f.dest, JSON.stringify(result));
             }
+            filesProceed++;
             // Print a success message.
-            grunt.log.writeln('File "' + f.dest + '" created.');
+            // grunt.verbose.writeln('File converted: ' + currentFilePath + ' -> ' + f.dest);
         });
       }
 

@@ -40,7 +40,7 @@
     "gruntplugin",
     "php",
     "json",
-    "array"
+    "array",
     "convert"
   ]
 }

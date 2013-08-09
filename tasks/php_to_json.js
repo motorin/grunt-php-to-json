@@ -36,7 +36,7 @@ module.exports = function(grunt) {
           callback(result);
         }
       });
-    }, 2);
+    }, numCPUs);
 
     // done building callback
     queue.drain = function() {

@@ -41,7 +41,7 @@ exports.php_to_json = {
     var testData = "";
     var someFunc = function(dataIn){
       testData = dataIn[2]["name"];
-    }
+    };
     eval( grunt.file.read('tmp/withWrapper.js') );  // read and run
 
     test.equal(testData, "Paula", 'File must call callback function inside it with JSON in parameters');
@@ -55,7 +55,7 @@ exports.php_to_json = {
     var define = function(name, callback){
       moduleName = name;
       testData = callback()[2]["name"];
-    }
+    };
     eval( grunt.file.read('tmp/withContentProcess.js') );  // read and run
 
     test.equal(moduleName, "MyLovelyProject/data", 'Module name must be `data`');

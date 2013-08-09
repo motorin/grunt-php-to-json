@@ -41,8 +41,7 @@ module.exports = function(grunt) {
     // done building callback
     queue.drain = function() {
         grunt.log.ok("Files successfuly converted: " + filesProceed);
-        // _.templateSettings = oldTemplateSettings;
-        done(true)
+        done(true);
     };
 
 

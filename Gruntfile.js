@@ -53,7 +53,7 @@ module.exports = function(grunt) {
           contentProcess: function(filepath, content, contentOptions){
             var path = require('path');
             var _ = grunt.util._;
-            var bundleName = path.basename(filepath).replace(new RegExp(path.extname(filepath) + '$'), '');
+            var bundleName = path.basename(filepath).replace(path.extname(filepath), '');
             var template = [
             'define("<%= bundlePrefix %>/<%= bundleName %>", function() {',
             'return <%= JSON.stringify(content) %>;',

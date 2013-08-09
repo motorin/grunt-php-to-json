@@ -95,7 +95,7 @@ grunt.initConfig({
 ```
 
 #### With Content Post-Process
-In this example, options `contentProcess` and `contentOptions` are used to convert the file. So the target file will contain jsonp-friendly data. It means that pure json-string will be wrapped with custom function call. [More about JSONP](http://en.wikipedia.org/wiki/JSONP).
+In this example, options `contentProcess` and `contentOptions` are used to convert the file. So it depends on you what exactly will be in target file. ;)
 
 ```js
 grunt.initConfig({
@@ -110,7 +110,7 @@ grunt.initConfig({
                 var path = require('path');
                 var _ = grunt.util._;
                 var bundlePrefix = contentOptions.projectName;
-                var bundleName = path.basename(filepath).replace(new                 RegExp(path.extname(filepath) + '$'), '');
+                var bundleName = path.basename(filepath).replace(path.extname(filepath), '');
                 var template = ['',
                     'define("<%= bundlePrefix %>/<%= bundleName %>", function(){',
                     'return <%= JSON.stringify(content) %>'

@@ -7,21 +7,8 @@
  */
 
 'use strict';
-var path = require('path');
 
 module.exports = function(grunt) {
-  var _ = grunt.util._;
-
-  var i18nProcess = function(filepath, content, contentOptions){
-    var bundleName = path.basename(filepath).replace(new RegExp(path.extname(filepath) + '$'), '');
-    var template = [
-    'define(function() {',
-    'return ((window.Inn = window.Inn || {}).i18n = window.Inn.i18n || {})['+ contentOptions.projectName + '/<%= filename %>] = <%= JSON.stringify(content) %>;',
-    '});'
-    ];
-    return _.template( template.join(''), {filename: bundleName, content: content});
-  }
-
 
   // Project configuration.
   grunt.initConfig({
@@ -43,41 +30,42 @@ module.exports = function(grunt) {
 
     // Configuration to be run (and then tested).
     php_to_json: {
-      i18n_4game: {
-        options: {
-          contentOptions: {
-            projectName: "4game.com" 
-          },
-          contentCallback: i18nProcess
-        },
+      defaultOptions: {
         expand: true,
-        cwd: process.env['INN_I18N_PATH'],
-        src: ['lang/*/4game.com/**/*.php','!lang/*/4game.com/**/summary.php'],
-        dest: 'tmp/i18n',
+        cwd: "test/fixtures",
+        src: ['data.php'],
+        dest: 'test/expected',
         ext: ".js"
       },
-      i18n_inn: {
+      withWrapper: {
+        options: {
+          wrapper: "someFunc"
+        },
+        files: {
+          'test/expected/withWrapper.js': 'test/fixtures/data.php'
+        }
+      },
+      withContentProcess: {
         options: {
           contentOptions: {
-            projectName: "inn" 
+            projectName: "MyLovelyProject"
           },
-          contentCallback: i18nProcess
+          contentProcess: function(filepath, content, contentOptions){
+            var path = require('path');
+            var _ = grunt.util._;
+            var bundleName = path.basename(filepath).replace(new RegExp(path.extname(filepath) + '$'), '');
+            var template = [
+            'define("<%= bundleName %>", function() {',
+            'return <%= JSON.stringify(content) %>;',
+            '});'
+            ];
+            return _.template( template.join(''), {bundleName: bundleName, content: content});
+          }
         },
-        expand: true,
-        cwd: process.env['INN_I18N_PATH'],
-        src: ['lang/*/inn/**/*.php','!lang/*/inn/**/summary.php'],
-        dest: 'tmp/i18n',
-        ext: ".js"
+        files: {
+          'test/expected/withContentProcess.js': 'test/fixtures/data.php'
+        }
       }
-      // custom_options: {
-      //   options: {,'lang/*/inn/**/*.php'
-      //     separator: ': ',
-      //     punctuation: ' !!!',
-      //   },
-      //   files: {
-      //     'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123'],
-      //   },
-      // },
     },
 
     // Unit tests.

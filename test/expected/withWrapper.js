@@ -1,0 +1,1 @@
+someFunc([{"name":"Peter","gender":"male"},{"name":"Sofia","gender":"female"},{"name":"Paula","gender":"female"}]);

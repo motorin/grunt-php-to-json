@@ -37,17 +37,25 @@ grunt.initConfig({
 
 ### Options
 
-#### options.separator
-Type: `String`
-Default value: `',  '`
+#### options.wrapper
+Type: 'String'
+Default value: `undefined`
 
-A string value that is used to do something with whatever.
+If present then content will have been wrapped with callback function with this name. It's common task for cross-domain AJAX-requests. 
+Please, notice that `options.contentProcess` will not be working with `options.wrapper`.
 
-#### options.punctuation
-Type: `String`
-Default value: `'.'`
+#### options.contentProcess
+Type: `Function`
+Parameters: function(filepath, content, contentOptions){…}
 
-A string value that is used to do something else with whatever else.
+A function for processing result content before writing it to file.
+Useful for attaching custom templates.
+
+#### options.contentOptions
+Type: `Any`
+Default value: `undefined`
+
+Custom data that just passed to `contentCallback`.
 
 ### Usage Examples
 
@@ -72,8 +80,12 @@ In this example, custom options are used to do something else with whatever else
 grunt.initConfig({
   php_to_json: {
     options: {
-      separator: ': ',
-      punctuation: ' !!!',
+      contentOptions: {
+          title: "New title",
+      },
+      contentCallback: function(filepath, content, contentOptions) {
+      
+      }
     },
     files: {
       'dest/default_options': ['src/testing', 'src/123'],

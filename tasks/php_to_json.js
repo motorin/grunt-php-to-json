@@ -12,8 +12,6 @@
 var exec = require('child_process').exec,
     numCPUs = require('os').cpus().length;
 
-
-
 module.exports = function(grunt) {
 
   // Link to Underscore.js
@@ -53,9 +51,7 @@ module.exports = function(grunt) {
 
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
-      template: '<%= content %>',
-      punctuation: '.',
-      separator: ', '
+      wrapper: null
     });
 
 
@@ -71,28 +67,25 @@ module.exports = function(grunt) {
         } else {
           return filepath;
         }
-      })
-      // .map(function(filepath) {
-      //   // Read file source.
-      //   return grunt.file.read(filepath);
-      // }).join(grunt.util.normalizelf(options.separator));
+      });
 
-      // Handle options.
-      // src += options.punctuation;
       if( currentFilePath){
         queue.push({file: currentFilePath}, function (result) {
-            // save
-            if( options.contentCallback ){
-              grunt.file.write(f.dest, options.contentCallback(currentFilePath, result, options.contentOptions));
+            // Write the destination file.
+            if( options.wrapper ){
+              grunt.file.write(f.dest, options.wrapper + '(' + JSON.stringify(result) + ');');
+            } else if( options.contentProcess ){
+              // With content postProcess
+              grunt.file.write(f.dest, options.contentProcess(currentFilePath, result, options.contentOptions));
             } else {
-              grunt.file.write(f.dest, result);
+              // Without content postProcess
+              grunt.file.write(f.dest, JSON.stringify(result));
             }
             // Print a success message.
             grunt.log.writeln('File "' + f.dest + '" created.');
         });
       }
 
-      // // Write the destination file.
       // grunt.file.write(f.dest, src);
 
     });

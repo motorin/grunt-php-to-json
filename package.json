@@ -20,7 +20,7 @@
       "url": "https://github.com/motorin/grunt-php-to-json/blob/master/LICENSE-MIT"
     }
   ],
-  "main": "Gruntfile.js",
+  "main": "php-to-json.js",
   "engines": {
     "node": ">= 0.8.0"
   },
@@ -37,6 +37,10 @@
     "grunt": "~0.4.1"
   },
   "keywords": [
-    "gruntplugin"
+    "gruntplugin",
+    "php",
+    "json",
+    "array"
+    "convert"
   ]
 }

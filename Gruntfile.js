@@ -34,7 +34,7 @@ module.exports = function(grunt) {
         expand: true,
         cwd: "test/fixtures",
         src: ['data.php'],
-        dest: 'test/expected',
+        dest: 'tmp/',
         ext: ".js"
       },
       withWrapper: {
@@ -42,7 +42,7 @@ module.exports = function(grunt) {
           wrapper: "someFunc"
         },
         files: {
-          'test/expected/withWrapper.js': 'test/fixtures/data.php'
+          'tmp/withWrapper.js': 'test/fixtures/data.php'
         }
       },
       withContentProcess: {
@@ -63,7 +63,7 @@ module.exports = function(grunt) {
           }
         },
         files: {
-          'test/expected/withContentProcess.js': 'test/fixtures/data.php'
+          'tmp/withContentProcess.js': 'test/fixtures/data.php'
         }
       }
     },

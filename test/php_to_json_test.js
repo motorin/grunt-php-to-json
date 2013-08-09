@@ -27,21 +27,39 @@ exports.php_to_json = {
     // setup here if necessary
     done();
   },
-  default_options: function(test) {
+  defaultOptions: function(test) {
     test.expect(1);
 
-    var actual = grunt.file.read('tmp/default_options');
-    var expected = grunt.file.read('test/expected/default_options');
-    test.equal(actual, expected, 'should describe what the default behavior is.');
+    var actual = grunt.file.read('tmp/data.js');
+    var expected = grunt.file.read('test/expected/data.js');
+    test.equal(actual, expected, 'File just with JSON-content');
 
     test.done();
   },
-  custom_options: function(test) {
+  withWrapper: function(test) {
     test.expect(1);
+    var testData = "";
+    var someFunc = function(dataIn){
+      testData = dataIn[2]["name"];
+    }
+    eval( grunt.file.read('tmp/withWrapper.js') );  // read and run
 
-    var actual = grunt.file.read('tmp/custom_options');
-    var expected = grunt.file.read('test/expected/custom_options');
-    test.equal(actual, expected, 'should describe what the custom option(s) behavior is.');
+    test.equal(testData, "Paula", 'File must call callback function inside it with JSON in parameters');
+
+    test.done();
+  },
+  withContentProcess: function(test) {
+    test.expect(2);
+    var moduleName = "";
+    var testData = "";
+    var define = function(name, callback){
+      moduleName = name;
+      testData = callback()[2]["name"];
+    }
+    eval( grunt.file.read('tmp/withContentProcess.js') );  // read and run
+
+    test.equal(moduleName, "data", 'Module name must be `data`');
+    test.equal(testData, "Paula", 'File must provide AMD module accordingly contentProcess template');
 
     test.done();
   },

@@ -58,7 +58,7 @@ exports.php_to_json = {
     }
     eval( grunt.file.read('tmp/withContentProcess.js') );  // read and run
 
-    test.equal(moduleName, "data", 'Module name must be `data`');
+    test.equal(moduleName, "MyLovelyProject/data", 'Module name must be `data`');
     test.equal(testData, "Paula", 'File must provide AMD module accordingly contentProcess template');
 
     test.done();

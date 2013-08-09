@@ -54,12 +54,13 @@ module.exports = function(grunt) {
             var path = require('path');
             var _ = grunt.util._;
             var bundleName = path.basename(filepath).replace(new RegExp(path.extname(filepath) + '$'), '');
+            grunt.log.writeln(contentOptions.projectName);
             var template = [
-            'define("<%= bundleName %>", function() {',
+            'define("<%= bundlePrefix %>/<%= bundleName %>", function() {',
             'return <%= JSON.stringify(content) %>;',
             '});'
             ];
-            return _.template( template.join(''), {bundleName: bundleName, content: content});
+            return _.template( template.join(''), {bundleName: bundleName, bundlePrefix: contentOptions.projectName, content: content});
           }
         },
         files: {

@@ -1,7 +1,7 @@
 {
   "name": "grunt-php-to-json",
   "description": "Convert PHP-array files to JSON-files",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/motorin/grunt-php-to-json",
   "author": {
     "name": "Pavel Motorin",
